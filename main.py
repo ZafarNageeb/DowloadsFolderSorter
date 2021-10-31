@@ -1,4 +1,7 @@
 import os
+import shutil
+from glob import glob 
+
 
 def get_download_path():
     if os.name == 'nt':
@@ -11,10 +14,27 @@ def get_download_path():
     else:
         return os.path.join(os.path.expanduser('~'), 'downloads')
 
+    folder_list = []
+    item_list
+
+
 def main():
-    files = [f for f in os.listdir(get_download_path()) ]
+    downloads_path = get_download_path()
+    files = [f for f in os.listdir(downloads_path) if os.path.isfile(f)]
+    folder_list = glob(downloads_path + "/*/")
     for f in files:
-        print(f)
+        print("-------------->" + f)
+        name, extension = os.path.splitext(f)
+        if extension[1:] in folder_list:
+            shutil.move(downloads_path + "/" + f,
+                        downloads_path + "/" + extension[1:])
+        else:
+            to_create_directory = downloads_path + "/" + extension[1:]
+            os.makedirs(to_create_directory)
+            folder_list.append(extension[1:])
+            shutil.move(downloads_path + "/" + f,
+                        downloads_path + "/" + extension[1:])
+
 
 if __name__ == '__main__':
     main()
