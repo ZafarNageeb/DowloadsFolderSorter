@@ -1,6 +1,6 @@
 import os
 import shutil
-from glob import glob 
+from glob import glob
 
 
 def get_download_path():
@@ -14,16 +14,14 @@ def get_download_path():
     else:
         return os.path.join(os.path.expanduser('~'), 'downloads')
 
-    folder_list = []
-    item_list
-
 
 def main():
     downloads_path = get_download_path()
-    files = [f for f in os.listdir(downloads_path) if os.path.isfile(f)]
+    files = [f for f in os.listdir(downloads_path)]
     folder_list = glob(downloads_path + "/*/")
+    print(folder_list)
     for f in files:
-        print("-------------->" + f)
+        print(f)
         name, extension = os.path.splitext(f)
         if extension[1:] in folder_list:
             shutil.move(downloads_path + "/" + f,
