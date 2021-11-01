@@ -19,19 +19,22 @@ def main():
     downloads_path = get_download_path()
     files = [f for f in os.listdir(downloads_path)]
     folder_list = glob(downloads_path + "/*/")
-    print(folder_list)
     for f in files:
         print(f)
         name, extension = os.path.splitext(f)
-        if extension[1:] in folder_list:
-            shutil.move(downloads_path + "/" + f,
-                        downloads_path + "/" + extension[1:])
-        else:
-            to_create_directory = downloads_path + "/" + extension[1:]
-            os.makedirs(to_create_directory)
-            folder_list.append(extension[1:])
-            shutil.move(downloads_path + "/" + f,
-                        downloads_path + "/" + extension[1:])
+        try:
+            if extension[1:] in folder_list:
+                shutil.move(downloads_path + "/" + f, downloads_path + "/" + extension[1:])
+                print("Moved file {" + f + "} ")
+            else:
+                to_create_directory = downloads_path + "/" + extension[1:]
+                os.makedirs(to_create_directory)
+                print("Created Folder {" + extension[1:] + "} ")
+                folder_list.append(extension[1:])
+                shutil.move(downloads_path + "/" + f, downloads_path + "/" + extension[1:])
+                print("Moved file {" + f + "} to " + extension[1:] + " folder")
+        except:
+            files.remove(f)
 
 
 if __name__ == '__main__':
